@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 //   amount: number;
 // }
 
-const categoryOptions = ["food", "transport", "housing", "other"] as const;
+const categoryOptions = ["groceries", "utilities", "entertainment", "other"] as const;
 
 const schema = z.object({
   description: z
@@ -75,9 +75,10 @@ const ExpenseTrackerForm = () => {
           id="category"
           className="form-control"
         >
-          <option value="food">Food</option>
-          <option value="transport">Transport</option>
-          <option value="housing">Housing</option>
+          <option value=""></option>
+          <option value="groceries">Groceries</option>
+          <option value="utilities">Utilities</option>
+          <option value="entertainment">Entertainment</option>
           <option value="other">Other</option>
         </select>
 
@@ -91,7 +92,8 @@ const ExpenseTrackerForm = () => {
           <p className="text-danger">The description must be at least 3 characters.</p>
         )} */}
       </div>
-      <button disabled={!isValid} className="btn btn-primary" type="submit">
+      {/* disabled={!isValid} */}
+      <button className="btn btn-primary" type="submit">
         Submit
       </button>
     </form>
