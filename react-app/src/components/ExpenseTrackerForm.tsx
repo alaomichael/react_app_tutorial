@@ -8,26 +8,43 @@ import { zodResolver } from "@hookform/resolvers/zod";
 //   amount: number;
 // }
 
-const categoryOptions = ["groceries", "utilities", "entertainment", "other"] as const;
+const categoryOptions = [
+  "groceries",
+  "utilities",
+  "entertainment",
+  "other",
+] as const;
 
 const schema = z.object({
   description: z
     .string()
     .min(3, { message: "Description should be at least 3 characters." }),
   amount: z.number({ invalid_type_error: "Amount is required." }),
-  category: z.enum(categoryOptions),
+  category: z.enum(categoryOptions, {
+    required_error: "Category is required.",
+  }),
 });
 
 type FormData = z.infer<typeof schema>;
 
-const ExpenseTrackerForm = () => {
+interface Props {
+  // items: object[];
+  // heading: string;
+  // // onSelectItem: (item: string) => void;
+  onFormSubmit: (items: object[]) => void;
+}
+
+const ExpenseTrackerForm = ({onFormSubmit}: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  const onSubmit = (data: FieldValues) => console.log(data);
+  const onSubmit = (data: FormData) => {
+    console.log("Submitted form data", data);
+    onFormSubmit([data]);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,7 +92,7 @@ const ExpenseTrackerForm = () => {
           id="category"
           className="form-control"
         >
-          <option value=""></option>
+          <option value="" selected={true}></option>
           <option value="groceries">Groceries</option>
           <option value="utilities">Utilities</option>
           <option value="entertainment">Entertainment</option>
